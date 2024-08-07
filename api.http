@@ -1,0 +1,41 @@
+POST http://localhost:3000/posts
+Content-Type: application/json
+
+{
+    "title": "service",
+    "content": "We need to perform a few operations on our users. To do so, let’s create a service."
+}
+
+###
+GET http://localhost:3000/posts
+###
+
+POST http://localhost:3000/authentication/register
+Content-Type: application/json
+
+{
+    "name": "hihi",
+    "email": "hoohoooo11223@gmail.com",
+    "password": "12345678", 
+    "address": {
+        "street": "234 de la thanh",
+        "city": "thanh xuan, hanoi",
+        "country": "vietnam- earth server"
+    }
+}
+
+###
+GET http://localhost:3000/authentication
+
+###
+
+POST http://localhost:3000/authentication/login
+Content-Type: application/json
+
+{
+    "email": "hehe363@gmail.com",
+    "password": "1" 
+}
+
+###
+POST http://localhost:3000/authentication/log-out
