@@ -73,6 +73,7 @@ $ npm run test:cov
 - what is refresh token
 
 4. Improvement speed by index
+
 a. Introduce
 - The job of indexes is to make our queries faster. It requires quite a bit of disk space by holding a copy of the indexed field values and pointing to the record they relate to. This information is stored in a separate data structure. Whenever we query the data, Postgres can use it under the hood to increase the speed
 - Postgres needs to keep it synchronized. Every time we insert or update the data, Postgres needs to update the indexes too. When thinking about adding indexes, we need to consider the pros and cons.
