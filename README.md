@@ -127,7 +127,8 @@ BEGIN;
   ROLLBACK
 explain: The above transaction will never drop the user table because we always run a ROLLBACK at the end.
 
-6. Microservice 
+6. Microservice
+
 a.Using the TCP layer
 - using TCP differently allows us to achieve event-based communication if we want. This way, the client does not wait for the response from the microservice.
 - reate a dedicated microservice instead of using the ClientProxy directly in the controller. This would give us the possibility to export it from the SubscribersModule and use in other places of our application.
@@ -145,6 +146,7 @@ can make our application more scalable.
 Because we implement and deploy each microservice separately, it might be easier to handle feature releases and bug fixes.
 
 7. Rabbit MQ
+
 a. Introduce 
 -The RabbitMQ is its fundamentals, a message broker that implements the Advanced Message Queuing Protocol (AMQP).
 
@@ -161,6 +163,7 @@ Summing up the above:
 3.the consumer takes the message from the queue and consumes it.
 
 8. CQRS Nestjs
+
 - CQRS is command-query responsibility segregation
 - Logic in services when use CQRS which use command to update data and queries to read it
 -  Therefore, we have a separation between performing actions and extracting data. While this might not be beneficial for simple CRUD applications, CQRS might make it easier to incorporate a complex business logic.
@@ -172,6 +175,7 @@ get comment by query
 getquery -> match handler -> controller
 
 9.Two-factor
+
 There is an important distinction between two-step authentication and two-factor authentication:
 - two-factor: requires both something we have and something we know: atp card and pin code
 - two-step: required all thing we know: password and pin code
@@ -199,7 +203,7 @@ There is an important distinction between two-step authentication and two-factor
 }
 - Running cat src/*/*.prisma > prisma/schema.prisma merges all .prisma files into the prisma/schema.prisma directory. It traverses through all of the subdirectories of src.
 
-RELATION DATAVASE
+RELATION DATABASE
 1. One to One
 - a row from the first table matches just one row from the second table and vice versa.
 - migrating and generating a new Prisma Client takes us three commands 
