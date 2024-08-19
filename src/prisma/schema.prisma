@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://postgres:postgres1@localhost:5432/nestjs?schema=public"
+}
+
+model Post {
+  id            Int       @id @default(autoincrement())
+  title         String
+  paragraphs    String[]
+  authorId      Int
+  scheduledDate DateTime? @db.Timestamptz(6)
+  author        User      @relation(fields: [authorId], references: [id])
+  Category      Category? @relation(fields: [categoryId], references: [id])
+  categoryId    Int?
+
+  @@index([authorId])
+}
+
+model Address {
+  id      Int    @id @default(autoincrement())
+  street  String
+  city    String
+  country String
+  user    User?
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String
+  password  String
+  addressId Int?     @unique
+  posts     Post[]
+  address   Address? @relation(fields: [addressId], references: [id])
+}
+
+model Category {
+  id    Int    @id @default(autoincrement())
+  name  String
+  posts Post[]
+}

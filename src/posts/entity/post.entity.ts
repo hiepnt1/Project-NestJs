@@ -1,9 +1,11 @@
 import { Expose, Transform } from "class-transformer";
 import User from "../../user/entity/user.entity";
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, Index, ManyToOne, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 import Category from "../../category/categories.entity";
+import { CommentsEntity } from "src/comments/entity/comment.entity";
 
 @Entity()
+
 export class PostEntity {
     @PrimaryGeneratedColumn()
     @Expose()
@@ -27,6 +29,7 @@ export class PostEntity {
     @Expose()
     public category?: string
 
+    @Index("post_authorId_index")
     @ManyToOne(() => User, (author: User) => author.posts)
     @Expose()
     public author: User
@@ -34,4 +37,7 @@ export class PostEntity {
     @ManyToMany(() => Category, (category: Category) => category.posts)
     @JoinTable()
     public categories: Category[]
+
+    @OneToMany(() => CommentsEntity, (comment: CommentsEntity) => comment.post)
+    comments?: CommentsEntity[]
 }

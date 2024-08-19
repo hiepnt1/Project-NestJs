@@ -4,13 +4,21 @@ import User from "./entity/user.entity";
 import { Repository } from "typeorm";
 import CreateUserDTO from "./CreateUser.dto";
 import Address from "./entity/address.entity";
+import * as bcrypt from 'bcrypt'
+import { authenticator } from "otplib";
+import { PrismaService } from "src/prisma/prisma.service";
+import { Prisma, PrismaClient } from "@prisma/client";
 
 @Injectable()
 export class UserService {
+
     constructor(
         @InjectRepository(User)
-        private userRepository: Repository<User>
-    ) { }
+        private userRepository: Repository<User>,
+        private readonly prismaService: PrismaService
+    ) {
+
+    }
 
     async getAllUser() {
         const users = await this.userRepository.find();
@@ -33,6 +41,7 @@ export class UserService {
         const newUser = this.userRepository.create(userData)
         await this.userRepository.save({ ...newUser });
         return newUser
+
     }
 
     async getById(id: number) {
@@ -43,8 +52,41 @@ export class UserService {
         throw new HttpException("User with this id does not exist", HttpStatus.NOT_FOUND)
     }
 
-    async deleteAll() {
-        await this.userRepository.delete
+    // create a method for saving the hash of the current refresh token
+    // make sure that we send both cookies when logging in => authController
+    async setCurrentRefreshToken(refreshToken: string, userID: number) {
+        const currentHashedRefreshToken = await bcrypt.hash(refreshToken, 10);
+        await this.userRepository.update(userID, {
+            currentHashedRefreshToken
+        })
     }
+
+    // handling the incoming refresh token
+    public async getUserWithRefreshToken(refreshToken: string, userId: number) {
+        const user = await this.getById(userId);
+        const checkTokenMatch = await bcrypt.compare(refreshToken, user.currentHashedRefreshToken)
+
+        if (checkTokenMatch) return true
+        return false;
+    }
+
+    async removeRefreshToken(userId: number) {
+        return this.userRepository.update(userId, {
+            currentHashedRefreshToken: null
+        });
+    }
+
+    public async setTwoFactorAuthenticationSecret(secret: string, userId: number) {
+        return this.userRepository.update(userId, {
+            twoFactorAuthenticationSecret: secret
+        });
+    }
+
+    async turnOnTwoFactorAuthentication(userId: number) {
+        return this.userRepository.update(userId, {
+            isTwoFactorAuthenticationEnabled: true
+        });
+    }
+
 
 }

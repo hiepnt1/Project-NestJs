@@ -29,7 +29,7 @@ GET http://localhost:3000/authentication
 
 ###
 
-POST http://localhost:3000/authentication/login
+POST http://localhost:3000/authentication/authenticated-user
 Content-Type: application/json
 
 {
@@ -39,3 +39,9 @@ Content-Type: application/json
 
 ###
 POST http://localhost:3000/authentication/log-out
+
+###
+POST http://localhost:3000/2fa/generate
+
+### 
+GET http://localhost:3000/2fa/turn-on

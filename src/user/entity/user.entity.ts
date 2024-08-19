@@ -9,6 +9,12 @@ export default class User {
     @Expose() // show 
     public id?: number
 
+    @Column({ nullable: true })
+    public twoFactorAuthenticationSecret?: string;
+
+    @Column({ default: false })
+    public isTwoFactorAuthenticationEnabled: boolean;
+
     @Column({ unique: true })
     @Expose()
     public email: string
@@ -22,6 +28,9 @@ export default class User {
     // hide
     public password: string
 
+    @Exclude()
+    public currentHashedRefreshToken?: string;
+
     // add eager: true => always to be included => every time we fetch users, we also get their addresses
     // Only one side of the relationship can be eager.
     // turn on the cascade option => we can save an address while saving a user.
@@ -31,6 +40,6 @@ export default class User {
     public address: Address
 
     @OneToMany(() => PostEntity, (post: PostEntity) => { post.author })
-    public posts: PostEntity
+    public posts?: PostEntity[]
 
 }
