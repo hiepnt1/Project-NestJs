@@ -244,6 +244,7 @@ RELATION DATABASE
 - The more users we have logged in, the more significant strain it puts on our server’s memory
 - if we have multiple instances of our web server, they don’t share memory => use load balacing
 - when use load balancing, the user authenticates through the first instance and then accesses resources through the second instance, the server won’t recognize the user => this issue of redis
+  
 11.2 Advantages
 - we have easy access to the session data, we can quickly invalidate it => we can easily remove one session from our memory
 -  if we don’t want the user to log in through multiple devices simultaneously, we can easily prevent that
